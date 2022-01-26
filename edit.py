@@ -47,20 +47,9 @@ def edit_video(description_dir, image_dir, music_dir, video_name):
     still = still.set_duration(audio.duration)
     still = still.set_audio(audio)
 
-
-    # add subscribe animation to beginning of video
-    txt = mpy.TextClip('Please Subscribe!', font='Courier',
-                       fontsize=120, color='white', bg_color='gray35')
-    txt = txt.set_position(('center', 0.6), relative=True)
-    txt = txt.set_start((0, 3)) # (min, s)
-    txt = txt.set_duration(4)
-    txt = txt.crossfadein(0.5)
-    txt = txt.crossfadeout(0.5)
-    video = mpy.CompositeVideoClip([still, txt])
-
-    # add fade to black at end of video
+    # No ImageMagick, so we need to use ffmpeg
     
-
+    video = mpy.CompositeVideoClip([still])
     # save file
     video.write_videofile(video_name+".mp4", threads=4, fps=24,
                                codec=vcodec,
