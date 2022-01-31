@@ -2,37 +2,38 @@ var song
 var fft
 
 function preload() {
-  song = loadSound('audio.mp3');
+  song = loadSound('Blackstripe - Boobs.mp3')
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  fft = new p5.FFT();
-
-  background(50);
-  stroke(205);
-  nofill();
-  textSize(32);
-  textAlign(CENTER, CENTER);
-  text("Javascript works", width/2, height/2);
+  createCanvas(windowWidth, windowHeight)
+  fft = new p5.FFT()
 
 }
 
 function draw() {
-  var wave = fft.waveform();
+  background(50)
+  stroke(225)
+  noFill()
 
-  for (var i = 0; i < wave.length; i++) {
-    var x = map(i, 0, wave.length, 0, width);
-    var y = map(wave[i], -1, 1, 0, height);
-    rect(x, y, 10, 10);
+  var wave = fft.waveform()
+
+  beginShape()
+  for (var x = 0; x < width; x++) {
+    var index = floor(map(x, 0, width, 0, wave.length))
+    var y = wave[index]* 300 + height/2
+    vertex(x, y)
   }
+  endShape()
 
 }
 
 function mousePressed() {
   if (song.isPlaying()) {
-    song.stop();
+    song.pause()
+    noLoop()
   } else {
-    song.play();
+    song.play()
+    loop()
   }
 }
