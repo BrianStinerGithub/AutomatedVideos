@@ -7,18 +7,17 @@ compression = "ultrafast"
 vcodec =   "libx264"
 videoquality = "24"
 
-txt_dir, music_dir = "description.txt", "music/Input"
+txt_dir, music_dir = "description/tracklist.txt", "music/Input"
 
 def merge_audio(description_dir, music_dir):
 
     songs = []
 
     # load description
-    description = open(description_dir, "a+") 
-    description.write(u'\uFEFF'.encode('UTF-8'))
-    description.write("\n")
-    description.write("Tracklist  • • • ")
-    description.write("\n")
+    tracklist = open(description_dir, "w")
+    tracklist.write("\n")
+    tracklist.write("Tracklist  • • • ")
+    tracklist.write("\n")
 
 
     # load songs and add tracklist to description
@@ -29,7 +28,7 @@ def merge_audio(description_dir, music_dir):
             current_song = mpy.AudioFileClip(os.path.join(music_dir, filename))
             songs.append(current_song)
             result = time.gmtime(duration)
-            description.write(f'{result.tm_hour}:{result.tm_min}:{result.tm_sec} • {filename.split(".")[0]}')
+            tracklist.write(f'{result.tm_hour}:{result.tm_min}:{result.tm_sec} • {filename.split(".")[0]} \n')
             duration += current_song.duration
 
     # merge audio
