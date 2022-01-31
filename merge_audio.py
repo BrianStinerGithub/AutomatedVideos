@@ -7,7 +7,7 @@ compression = "ultrafast"
 vcodec =   "libx264"
 videoquality = "24"
 
-txt_dir, music_dir = "description/tracklist.txt", "music/Input"
+txt_dir, music_dir = "description/tracklist.txt", "music"
 
 def merge_audio(description_dir, music_dir):
 
@@ -33,7 +33,7 @@ def merge_audio(description_dir, music_dir):
 
     # merge audio
     audio = mpy.concatenate_audioclips(songs)
-    audio.write_audiofile("music/Output/audio.mp3", codec="libmp3lame", bitrate="320k", ffmpeg_params=["-q:a", "5"])
+    audio.write_audiofile("audio.mp3", codec="libmp3lame", bitrate="320k", ffmpeg_params=["-q:a", "5"])
 
 if __name__ == '__main__':
     merge_audio(txt_dir, music_dir)
