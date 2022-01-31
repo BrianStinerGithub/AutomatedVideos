@@ -1,18 +1,15 @@
-from xmlrpc.client import DateTime
 import moviepy.editor as mpy
 import os
-from datetime import date, datetime
+import datetime
 
 # slow, ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow
-compression = "slow"
+compression = "ultrafast"
 vcodec =   "libx264"
 videoquality = "24"
 
-txt_dir, png_dir, music_dir, video_name = "description.txt", "picture", "music", "Title"
+txt_dir, music_dir = "description.txt", "music"
 
-
-
-def edit_video(description_dir, image_dir, music_dir, video_name):
+def merge_audio(description_dir, music_dir):
 
     songs = []
 
@@ -35,29 +32,9 @@ def edit_video(description_dir, image_dir, music_dir, video_name):
             videotime += current_song.duration
             track_time = datetime.fromtimestamp(videotime)
 
-
-    # load image
-    still = mpy.ImageClip(os.path.join(image_dir, "image.png"))
-
     # merge audio
     audio = mpy.concatenate_audioclips(songs)
-
-    # still image with audio creates video
-    still.resize(width=1920, height=1080)
-    still = still.set_duration(audio.duration)
-    still = still.set_audio(audio)
-
-    # No ImageMagick, so we need to use ffmpeg
-    
-    video = mpy.CompositeVideoClip([still])
-    # save file
-    video.write_videofile(video_name+".mp4", threads=4, fps=24,
-                               codec=vcodec,
-                               preset=compression,
-                               ffmpeg_params=["-crf",videoquality])
-
-    video.close()
-
+    audio.write_audiofile("audio.mp3")
 
 if __name__ == '__main__':
-    edit_video(txt_dir, png_dir, music_dir, video_name)
+    merge_audio(txt_dir, music_dir)
