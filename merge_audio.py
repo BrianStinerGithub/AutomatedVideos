@@ -24,7 +24,7 @@ def merge_audio(description_dir, music_dir):
     duration = 0
     for file in os.listdir(music_dir):
         filename = os.fsdecode(file)
-        if filename.endswith(".mp3"):
+        if filename.endswith(".mp3") or filename.endswith(".m4a"):
             current_song = mpy.AudioFileClip(os.path.join(music_dir, filename))
             songs.append(current_song)
             result = time.gmtime(duration)
