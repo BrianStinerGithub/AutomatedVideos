@@ -1,11 +1,14 @@
-var song
+var songs = []
 var fft
 var particles = []
 var backgroundimage
 var focus
 
 function preload() {
-  song = loadSound('audio.mp3')
+
+  for(var i = 0; i < 5; i++) {
+    songs.add(loadSound('audio/audio'+i+'.mp3'))
+  }
   img = loadImage('picture/image.png')
 }
 
