@@ -25,7 +25,8 @@ function draw() {
     capturer.start()
     song.play()
   }
-  else if (frameCount === timetoframes(0, 45, 10)) {
+  
+  else if (frameCount === timetoframes(0, 56, 19)) {
     capturer.stop()
     capturer.save()
   }
