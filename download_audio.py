@@ -1,7 +1,8 @@
+from __future__ import unicode_literals
 import moviepy.editor as mpy
 import os
 import time
-from __future__ import unicode_literals
+
 import youtube_dl
 
 class MyLogger(object):
@@ -24,9 +25,9 @@ compression = "ultrafast"
 vcodec =   "libx264"
 videoquality = "24"
 
-txt_dir, audio_dir, playlist_url = "description/tracklist.txt", "audio", "https://www.youtube.com/playlist?list=PL5-dJg6_oRX-_7QQ_xX-xY_xqYX8_xX9"
+txt_dir, audio_dir, playlist_url = "description/tracklist.txt", "audio", "https://www.youtube.com/playlist?list=PLKOse5kqL5dDMwOUqqs4pmk_cFx3Pk17H"
 
-def download_audio(description_dir, audio_dir):
+def download_audio(description_dir, audio_dir, playlist_url):
 
     # load description
     tracklist = open(description_dir, "w")
@@ -37,8 +38,7 @@ def download_audio(description_dir, audio_dir):
     # download songs from list.txt
     ydl_opts = {
     'format': 'bestaudio/best',
-    'autonumber-start': 1,
-    'filename': '%(title)s.%(ext)s',
+    'filename': '~/audio/%(title)s.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
@@ -49,9 +49,6 @@ def download_audio(description_dir, audio_dir):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([playlist_url])
-            
-
-
 
     # load songs and add tracklist to description
     duration, i = 0, 1
@@ -67,4 +64,4 @@ def download_audio(description_dir, audio_dir):
 
 
 if __name__ == '__main__':
-    download_audio(txt_dir, audio_dir)
+    download_audio(txt_dir, audio_dir, playlist_url)
