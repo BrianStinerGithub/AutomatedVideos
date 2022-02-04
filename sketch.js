@@ -1,5 +1,5 @@
-var
-// var songs = []
+// var song
+var songs = []
 var fft
 var particles = []
 var backgroundimage
@@ -8,12 +8,11 @@ var s
 
 function preload() {
 
-  // for(var i = 0; i < 20; i++) {
-  //   songs.push(loadSound('audio/audio'+(i+1)+'.mp3'))
-  //   console.log(songs[i].duration())
-  // }
-  song = loadSound('audio/audio1.mp3')
-  console.log(song.duration())
+  for(var i = 0; i < 20; i++) {
+    songs.push(loadSound('audio/audio'+(i+1)+'.mp3'))
+    console.log(songs[i].duration())
+  }
+  
   img = loadImage('picture/image.png')
 }
 
@@ -24,34 +23,29 @@ function setup() {
   angleMode(DEGREES)
 
   focus = {x: 250, y: 250}
-  s=0
+  s=1
 
   //backgroundimage = new AnimatedImage(img)
 }
 
 function draw() {
 
-  //This is to test why the array of songs have no duration()
-  if( frameCount === 1){
-    capturer.start()
-    song.play()
-  } else if (frameCount === timetoframes(0,0,10)) {
+  // This controls starting and stopping the clip recording between songs
+  console.log(frameCount, floor(songs[s].duration() * 24))
+  if (!songs[s].isPlaying() && frameCount > 10) {
+    console.log("-----------------end of song----------------")
     capturer.stop()
     capturer.save()
+    frameCount = 1
+    s++
+  } 
+  if( frameCount === 1 ) {
+    console.log("-----------------start of song----------------")
+    capturer.start()
+    songs[s].play()
   }
 
-}
-  // if (frameCount === songs[s].duration() * 24) {
-  //   capturer.stop()
-  //   capturer.save()
-  //   frameCount = 1
-  //   s++
-  // } 
-  // if( frameCount === 1 ) {
-  //   capturer.start()
-  //   songs[s].play()
-  // }
-
+  // setup the drawing environment
   background(50)
   stroke(225)
   strokeWeight(2)
@@ -63,7 +57,7 @@ function draw() {
   low = fft.getEnergy(1, 120)
   mid = fft.getEnergy(80, 220)
   high = fft.getEnergy(160, 255)
-  var wave = fft.waveform()
+  wave = fft.waveform()
 
   // bass animated image
   push()
@@ -109,15 +103,15 @@ function draw() {
   capturer.capture(document.getElementById('defaultCanvas0'))
 }
 
-// function mousePressed() {
-//   if (song.isPlaying()) {
-//     song.pause()
-//     noLoop()
-//   } else {
-//     song.play()
-//     loop()
-//   }
-// }
+function mousePressed() {
+  if (songs[s].isPlaying()) {
+    songs[s].pause()
+    noLoop()
+  } else {
+    songs[s].play()
+    loop()
+  }
+}
 
 
 
@@ -178,6 +172,6 @@ class AnimatedImage {
 
 }
 
-function timetoframes(hours, minutes, seconds) {
-  return (60 * 60 * 60 * hours) + (60 * 60 * minutes) + (60 * seconds)
+function timetoframes(seconds, fps = 24) {
+  return seconds * fps
 }
