@@ -30,6 +30,7 @@ def preload():
         filename = os.fsdecode(file)
         if filename.endswith(".mp3"):
             current_song = mpy.AudioFileClip(os.path.join(audio_dir, filename))
+            current_song.filename = filename
             songs.append(current_song)
             result = time.gmtime(duration)
             print(filename)
@@ -54,17 +55,16 @@ def make_frame(t):
     return surface.get_npimage()
 
 def create_video():
-    # for song in songs:
-    #     clip = mpy.VideoClip(make_frame, duration=60) # song.duration
-    #     clip = clip.set_audio(song)
-    #     print("\n"+song.filename)
-    #     clip.write_videofile(f"videos/{song.filename.split('.')[0]}.mp4",
-    #         fps=animationfps, codec='mpeg4', audio_codec="aac", 
-    #         audio_bitrate="192k", preset="ultrafast", threads=4, 
-    #         verbose=False, logger=None)
+    for song in songs[0:1]:
+        clip = mpy.VideoClip(make_frame, duration=66) # song.duration
+        clip.set_fps(24).set_duration(song.duration).set_audio(song).write_videofile(f"videos\{song.filename.split('.')[0]}.mp4",
+            codec='mpeg4', audio_codec="aac",
+            audio_bitrate="192k", preset="ultrafast", threads=4, 
+            verbose=False, logger=None)
+        clip.close()
 
-    clip = mpy.VideoClip(make_frame, duration=60)
-    clip.set_fps(24).set_duration(60).write_videofile("test.mp4")
+    # clip = mpy.VideoClip(make_frame, duration=60)
+    # clip.set_fps(24).set_duration(60).write_videofile("test.mp4")
     
 
 
