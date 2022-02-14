@@ -30,21 +30,6 @@ function setup() {
 
 function draw() {
 
-  // This controls starting and stopping the clip recording between songs
-  console.log(frameCount, floor(songs[s].duration() * 24))
-  if (!songs[s].isPlaying() && frameCount > 10) {
-    console.log("-----------------end of song----------------")
-    capturer.stop()
-    capturer.save()
-    frameCount = 1
-    s++
-  } 
-  if( frameCount === 1 ) {
-    console.log("-----------------start of song----------------")
-    capturer.start()
-    songs[s].play()
-  }
-
   // setup the drawing environment
   background(50)
   stroke(225)
